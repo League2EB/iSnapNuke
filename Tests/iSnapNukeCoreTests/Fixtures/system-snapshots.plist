@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Snapshots</key>
+    <array>
+        <dict>
+            <key>LimitingContainerShrink</key>
+            <true/>
+            <key>Purgeable</key>
+            <false/>
+            <key>RevertTo</key>
+            <false/>
+            <key>RootTo</key>
+            <false/>
+            <key>SnapshotName</key>
+            <string>com.apple.os.update-example</string>
+            <key>SnapshotUUID</key>
+            <string>9BBBE73A-3376-4FDE-A7A5-0C06707213F8</string>
+            <key>SnapshotXID</key>
+            <integer>19422413</integer>
+        </dict>
+    </array>
+</dict>
+</plist>

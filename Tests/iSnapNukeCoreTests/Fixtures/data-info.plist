@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>DeviceIdentifier</key>
+    <string>disk3s1</string>
+    <key>VolumeName</key>
+    <string>Macintosh HD - Data</string>
+    <key>MountPoint</key>
+    <string>/System/Volumes/Data</string>
+</dict>
+</plist>

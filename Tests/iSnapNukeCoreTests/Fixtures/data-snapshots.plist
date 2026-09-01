@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE plist PUBLIC "-//Apple//DTD PLIST 1.0//EN" "http://www.apple.com/DTDs/PropertyList-1.0.dtd">
+<plist version="1.0">
+<dict>
+    <key>Snapshots</key>
+    <array>
+        <dict>
+            <key>LimitingContainerShrink</key>
+            <true/>
+            <key>Purgeable</key>
+            <true/>
+            <key>RevertTo</key>
+            <false/>
+            <key>RootTo</key>
+            <false/>
+            <key>SnapshotName</key>
+            <string>com.synology.activebackup.example</string>
+            <key>SnapshotUUID</key>
+            <string>0FA116AA-913B-4A65-95B0-D5769B5C8097</string>
+            <key>SnapshotXID</key>
+            <integer>19739735</integer>
+        </dict>
+        <dict>
+            <key>LimitingContainerShrink</key>
+            <false/>
+            <key>Purgeable</key>
+            <false/>
+            <key>RevertTo</key>
+            <false/>
+            <key>RootTo</key>
+            <false/>
+            <key>SnapshotName</key>
+            <string>com.example.retained</string>
+            <key>SnapshotUUID</key>
+            <string>E35DF2CA-16E1-448A-AD02-059C0DB240C2</string>
+            <key>SnapshotXID</key>
+            <integer>19763190</integer>
+        </dict>
+    </array>
+</dict>
+</plist>
