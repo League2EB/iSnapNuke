@@ -14,10 +14,6 @@ let package = Package(
             url: "https://github.com/simibac/ConfettiSwiftUI.git",
             from: "3.0.0"
         ),
-        .package(
-            url: "https://github.com/airbnb/lottie-ios.git",
-            from: "4.6.0"
-        ),
     ],
     targets: [
         .target(
@@ -36,10 +32,8 @@ let package = Package(
                 "iSnapNukeCore",
                 "iSnapNukeLocalization",
                 .product(name: "ConfettiSwiftUI", package: "ConfettiSwiftUI"),
-                .product(name: "Lottie", package: "lottie-ios"),
             ],
-            path: "Sources/iSnapNukeApp",
-            resources: [.process("Resources")]
+            path: "Sources/iSnapNukeApp"
         ),
         .testTarget(
             name: "iSnapNukeCoreTests",

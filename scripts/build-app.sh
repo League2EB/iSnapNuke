@@ -12,14 +12,12 @@ swift build -c "$CONFIGURATION"
 BIN_DIR="$(swift build -c "$CONFIGURATION" --show-bin-path)"
 BIN_PATH="$BIN_DIR/iSnapNuke"
 LOCALIZATION_BUNDLE="$BIN_DIR/iSnapNuke_iSnapNukeLocalization.bundle"
-APP_RESOURCE_BUNDLE="$BIN_DIR/iSnapNuke_iSnapNukeApp.bundle"
 
 rm -rf "$APP_PATH" "$ICONSET_PATH"
 mkdir -p "$APP_PATH/Contents/MacOS" "$APP_PATH/Contents/Resources" "$ICONSET_PATH"
 cp "$BIN_PATH" "$APP_PATH/Contents/MacOS/iSnapNuke"
 cp "$ROOT_DIR/Packaging/Info.plist" "$APP_PATH/Contents/Info.plist"
 ditto "$LOCALIZATION_BUNDLE" "$APP_PATH/Contents/Resources/iSnapNuke_iSnapNukeLocalization.bundle"
-ditto "$APP_RESOURCE_BUNDLE" "$APP_PATH/Contents/Resources/iSnapNuke_iSnapNukeApp.bundle"
 
 for size in 16 32 128 256 512; do
   sips -s format png -z "$size" "$size" "$ICON_SOURCE" --out "$ICONSET_PATH/icon_${size}x${size}.png" >/dev/null
