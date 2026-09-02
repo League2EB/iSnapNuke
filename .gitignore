@@ -23,3 +23,10 @@ dist/
 *.key
 *.privatekey
 .sparkle_private_key
+
+# Local interactive release automation. This script uses the current user's
+# Keychain credentials and must not be committed.
+/releae.sh
+
+# package
+/scripts/package-update.sh
