@@ -27,6 +27,7 @@ dist/
 # Local interactive release automation. This script uses the current user's
 # Keychain credentials and must not be committed.
 /releae.sh
+/scripts/generate-release-notes.py
 
 # package
 /scripts/package-update.sh

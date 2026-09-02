@@ -34,7 +34,15 @@ The app appears in the Dock, does not install a background service, and does not
 
 ## Why I Made This
 
-<!-- Write your reason for making iSnapNuke here. -->
+I've always used Synology Active Backup for Business to back up my Mac. But as someone who obsessively watches free disk space, I started noticing it shrink even when I had barely done anything.
+
+A friend gave me DaisyDisk, and one scan revealed a pile of hidden APFS snapshots eating up a surprising amount of space. The most frustrating part was:
+
+- DaisyDisk could see them, but couldn't delete them.
+- [Mole](https://github.com/tw93/mole) either didn't find them, or I was using it wrong.
+- CleanMyMac X didn't find them at all.
+
+So I built iSnapNuke: a nuclear option for blasting those snapshots away and taking back the disk space that was yours to begin with.
 
 <a id="features"></a>
 
@@ -53,7 +61,9 @@ The app appears in the Dock, does not install a background service, and does not
 
 ## Screenshots
 
-Screenshots are coming soon.
+<p align="center">
+  <img src="Assets/Screenshots/en/home.png" width="33.333%" alt="iSnapNuke home screen in English"><img src="Assets/Screenshots/en/delete-confirmation.png" width="33.333%" alt="English confirmation dialog for deleting three snapshots"><img src="Assets/Screenshots/en/deletion-success.png" width="33.333%" alt="English summary showing three snapshots deleted successfully">
+</p>
 
 <a id="safety-rules"></a>
 

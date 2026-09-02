@@ -34,7 +34,16 @@ App 會顯示在 Dock，不會安裝背景服務，也不會自動刪除快照�
 
 ## 製作原因
 
-<!-- 在此填寫 iSnapNuke 的製作原因。 -->
+我一直用 Synology Active Backup for Business 備份 macOS。身為一個有容量潔癖的人，我漸漸發現明明沒做什麼，磁碟空間卻一直變少。
+
+拿朋友送我的 DaisyDisk 一掃，才發現一堆隱藏的 APFS 快照佔了不少空間。最氣的是：
+
+- DaisyDisk 掃得到，卻刪不掉。
+- [Mole](https://github.com/tw93/mole) 可能沒掃到，也可能是我不會用。
+- CleanMyMac X 完全沒掃出來。
+
+所以我做了 iSnapNuke：給你一顆核子彈，把這些快照炸掉，拿回本來就該屬於你的磁碟空間。
+
 
 <a id="features"></a>
 
@@ -53,7 +62,9 @@ App 會顯示在 Dock，不會安裝背景服務，也不會自動刪除快照�
 
 ## 螢幕截圖
 
-螢幕截圖即將提供。
+<p align="center">
+  <img src="Assets/Screenshots/zh-Hant/home.png" width="33.333%" alt="iSnapNuke 繁體中文首頁畫面"><img src="Assets/Screenshots/zh-Hant/delete-confirmation.png" width="33.333%" alt="確認刪除三個快照的繁體中文對話框"><img src="Assets/Screenshots/zh-Hant/deletion-success.png" width="33.333%" alt="顯示已成功刪除三個快照的繁體中文摘要">
+</p>
 
 <a id="safety"></a>
 
