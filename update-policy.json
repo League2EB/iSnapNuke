@@ -1,15 +1,15 @@
 {
   "policy" : {
-    "latestBuild" : 2,
-    "latestVersion" : "1.0.1",
-    "minimumSupportedBuild" : 1,
-    "minimumSupportedVersion" : "1.0.0",
-    "publishedAt" : "2026-09-02T08:07:17Z",
+    "latestBuild" : 3,
+    "latestVersion" : "1.0.2",
+    "minimumSupportedBuild" : 3,
+    "minimumSupportedVersion" : "1.0.2",
+    "publishedAt" : "2026-09-02T11:47:53Z",
     "releaseNotes" : {
-      "en" : "- Updated the English documentation for viewing and safely deleting APFS snapshots.\n- Added English screenshots covering the snapshot list, deletion confirmation, and successful deletion.",
-      "zh-Hant" : "- 更新繁體中文文件，說明如何檢視及安全刪除 APFS 快照。\n- 新增繁體中文螢幕截圖，涵蓋快照列表、刪除確認及成功刪除畫面。"
+      "en" : "- Fixed an issue that could prevent iSnapNuke from relaunching after an update is installed.\n- Improved update installation reliability.",
+      "zh-Hant" : "- 修正安裝更新後可能無法重新啟動 iSnapNuke 的問題。\n- 提升更新安裝的可靠性。"
     },
     "schemaVersion" : 1
   },
-  "signature" : "6VU2Yj27FmxiVbRSDipiMegXWhm4U/8FI7eW5EFoGYMu8UfDEK3fddTVnaU/CPGbbKuKMYOu8NXANX+ZnhAqAg=="
+  "signature" : "3+cP3L17MvsSzClnF9hYatVvCZCiRyLnJEjTyeMtFW5pSOLPC5NAGb5ShAGMZX0Fql70XuyaX64bgn2HNySMCg=="
 }

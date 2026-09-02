@@ -6,40 +6,30 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     <channel>
         <title>iSnapNuke</title>
         <item>
-            <title>1.0.1</title>
-            <pubDate>Wed, 02 Sep 2026 16:07:17 +0800</pubDate>
-            <link>https://github.com/League2EB/iSnapNuke/releases/tag/v1.0.1</link>
-            <sparkle:version>2</sparkle:version>
-            <sparkle:shortVersionString>1.0.1</sparkle:shortVersionString>
+            <title>1.0.2</title>
+            <pubDate>Wed, 02 Sep 2026 19:47:53 +0800</pubDate>
+            <link>https://github.com/League2EB/iSnapNuke/releases/tag/v1.0.2</link>
+            <sparkle:version>3</sparkle:version>
+            <sparkle:shortVersionString>1.0.2</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
             <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
-            <description sparkle:format="markdown"><![CDATA[# iSnapNuke 1.0.1
+            <description sparkle:format="markdown"><![CDATA[# iSnapNuke 1.0.2
 
 ## English
 
-- Updated the English documentation for viewing and safely deleting APFS snapshots.
-- Added English screenshots covering the snapshot list, deletion confirmation, and successful deletion.
+- Fixed an issue that could prevent iSnapNuke from relaunching after an update is installed.
+- Improved update installation reliability.
 
 ## 繁體中文
 
-- 更新繁體中文文件，說明如何檢視及安全刪除 APFS 快照。
-- 新增繁體中文螢幕截圖，涵蓋快照列表、刪除確認及成功刪除畫面。
+- 修正安裝更新後可能無法重新啟動 iSnapNuke 的問題。
+- 提升更新安裝的可靠性。
 ]]></description>
-            <enclosure url="https://github.com/League2EB/iSnapNuke/releases/download/v1.0.1/iSnapNuke-1.0.1-2-arm64.dmg" length="3002208" type="application/octet-stream" sparkle:edSignature="/xYQGlkqLmM0sZELyeBcO/CiZbfXs5Nf7pXMsE4cf7w8hwc0UGlENAVtP5OhFgsginLdlPdRg2WGEXwHOjdBAg=="/>
-        </item>
-        <item>
-            <title>1.0.0</title>
-            <pubDate>Wed, 02 Sep 2026 11:34:19 +0800</pubDate>
-            <link>https://github.com/League2EB/iSnapNuke/releases/tag/v1.0.0</link>
-            <sparkle:version>1</sparkle:version>
-            <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
-            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
-            <enclosure url="https://github.com/League2EB/iSnapNuke/releases/download/v1.0.1/iSnapNuke-1.0.0-1-arm64.dmg" length="3002239" type="application/octet-stream" sparkle:edSignature="1K0IxKnVp6HtFPJ/wpGMR7THWouGytsu+yOoXRAw0ADzYx7jazqJgsfWmwSOqYWNsXR2jGM8uvxP3EmLFnhKCQ=="/>
+            <enclosure url="https://github.com/League2EB/iSnapNuke/releases/download/v1.0.2/iSnapNuke-1.0.2-3-arm64.dmg" length="3003172" type="application/octet-stream" sparkle:edSignature="HS7BHc8cQWPYOZke9lM5Kpkf/03JqvC+bfWiwwL7gPbkSBZMvTYnXOXpouD1nMR/aEBBDq7c9tl+47GaLrP8Bg=="/>
         </item>
     </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: R3/YYehrx1ANL2pheX1aoMzXu6KBtwjEQUhN+xWRogkVZGnX8txJb0+2UFNHnFH4G0+I8jVX2DYUSI2zKf1JCw==
-length: 2469
+edSignature: RDtkCucvCM/xA2KPX0RnjFLOUW4H62neTgSzr0XjoyoB/FyAGxbQesZRV+XJG9cIBpTQU2pxNNgOgjXKtHMqAw==
+length: 1579
 -->
