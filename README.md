@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <a href="#features">Features</a> · <a href="#why-i-made-this">Why I Made This</a> · <a href="#screenshots">Screenshots</a> · <a href="#safety-rules">Safety Rules</a> · <a href="#fuck-it-mode">Fuck It Mode</a> · <a href="#how-it-works">How It Works</a> · <a href="#installation">Installation</a> · <a href="#updates">Updates</a> · <a href="#build-from-source">Build from Source</a> · <a href="#release-process">Release Process</a> · <a href="#faq">FAQ</a>
+  <a href="#features">Features</a> · <a href="#why-i-made-this">Why I Made This</a> · <a href="#screenshots">Screenshots</a> · <a href="#safety-rules">Safety Rules</a> · <a href="#fuck-it-mode">Fuck It Mode</a> · <a href="#how-it-works">How It Works</a> · <a href="#installation">Installation</a> · <a href="#updates">Updates</a> · <a href="#build-from-source">Build from Source</a> · <a href="#faq">FAQ</a>
 </p>
 
 ---
@@ -126,30 +126,7 @@ Public builds are signed with a Developer ID certificate and notarized by Apple.
 
 ## Updates
 
-iSnapNuke's direct-download build has no application backend. It reads a small, signed update policy from this repository and uses signed Sparkle disk images for installation.
-
-- If the installed build is behind the latest build but still supported, the app shows a dismissible **Update Available** sheet.
-- If the installed build is below `minimumSupportedBuild`, the app replaces its main UI with **Update Required**. The only actions are update, retry the policy check, or quit.
-- The last valid policy is cached locally. If GitHub cannot be reached, a cached required-update policy remains enforced. A first launch with no policy cache fails open, so offline users are not locked out merely because the policy could not be retrieved.
-- Policy requests use HTTPS and ETag validation. The request does not include APFS metadata, account information, or telemetry.
-
-The policy and Sparkle appcast are published at fixed repository paths:
-
-- `https://raw.githubusercontent.com/League2EB/iSnapNuke/main/update-policy.json`
-- `https://raw.githubusercontent.com/League2EB/iSnapNuke/main/appcast.xml`
-
-### Local update-flow demo
-
-The demo never downloads an archive, writes an update-policy cache, or runs `diskutil`. It uses the app's existing safe snapshot demo mode as well.
-
-```sh
-./scripts/demo-update.sh optional  # Update Available sheet
-./scripts/demo-update.sh required  # Update Required blocker
-./scripts/demo-update.sh upToDate  # normal demo app
-./scripts/demo-update.sh offline   # first-launch offline fallback
-```
-
-For the first two cases, choose **Update Now** to verify the installation handoff. The app shows a confirmation that the operation is a local demo and does not install anything.
+Public DMG builds can check GitHub for signed updates. When an update is available, iSnapNuke offers installation; if the installed version is no longer supported, it prompts you to update before using the app.
 
 <a id="build-from-source"></a>
 
@@ -167,123 +144,9 @@ open dist/iSnapNuke.app
 
 Building from source requires the Xcode Command Line Tools.
 
+Default source builds do not include the public update keys, so in-app updates are disabled. To update this build, pull a newer source revision and build it again.
+
 If Gatekeeper blocks the first launch, Control-click the app in Finder and choose **Open**. Closing the main window quits the app.
-
-<a id="release-process"></a>
-
-## Release Process
-
-Do not publish a bare tag as an app release. Every public version needs a GitHub Release asset, a signed Sparkle appcast entry, and a signed update policy.
-
-### One-time key setup
-
-1. Generate the policy-signing key outside this repository:
-
-   ```sh
-   swift run iSnapNukeReleaseTool generate-policy-key \
-     --private-key "$HOME/.config/iSnapNuke/update-policy.key"
-   ```
-
-   Save the printed public key. Keep that private-key file private; do not commit it.
-
-2. Use Sparkle's official [`generate_keys`](https://sparkle-project.org/documentation/publishing/) utility to create the Sparkle EdDSA key pair in Keychain. This project uses the account `com.xuanci.isnapnuke`. Retain the printed public key.
-
-3. Install a Developer ID Application certificate and store App Store Connect notarization credentials in a `notarytool` Keychain profile. The local profile used by the commands below is `iSnapNuke-notary`.
-
-4. Create a fine-grained GitHub PAT limited to `League2EB/iSnapNuke` with `Contents: Read and write`, then store it in Keychain under service `iSnapNuke-gh-pat` and account `League2EB`. Enter it without placing it in shell history:
-
-   ```zsh
-   read -s "TOKEN?GitHub PAT: "; print
-   security add-generic-password -U \
-     -a League2EB \
-     -s iSnapNuke-gh-pat \
-     -w "$TOKEN"
-   unset TOKEN
-   ```
-
-   Git pushes continue to use SSH; the PAT is only used by `gh` for release API calls.
-
-5. Export the public keys and signing identity in a secure release shell or CI secret store:
-
-   ```sh
-   export UPDATE_POLICY_PUBLIC_KEY="<policy public key>"
-   export SPARKLE_PUBLIC_KEY="<Sparkle public key>"
-   export SIGNING_IDENTITY="Developer ID Application: XuanCi Tech. Co., Ltd. (T46J69KN43)"
-   export NOTARY_PROFILE="iSnapNuke-notary"
-   ```
-
-   The project intentionally does not store certificates, private keys, tokens, or notarization credentials.
-
-### Per-release checklist
-
-1. Bump both version fields with an increasing build number:
-
-   ```sh
-   ./scripts/set-version.sh 1.1.0 2
-   ```
-
-2. With the same secure release environment variables set, build and verify the Developer ID app, then create, sign, notarize, staple, and verify the Apple Silicon DMG:
-
-   ```sh
-   REQUIRE_UPDATE_KEYS=1 ./scripts/build-app.sh
-   ./scripts/verify-app-bundle.sh
-   NOTARIZE=1 ./scripts/package-update.sh
-   ```
-
-   The resulting asset is `dist/release/iSnapNuke-1.1.0-2-arm64.dmg` and contains `iSnapNuke.app` plus an `/Applications` shortcut.
-
-3. Generate the EdDSA-signed Sparkle appcast entry from the final notarized DMG:
-
-   ```sh
-   VERSION=1.1.0
-   BUILD=2
-   TAG="v$VERSION"
-   DMG="dist/release/iSnapNuke-$VERSION-$BUILD-arm64.dmg"
-   FEED_DIR=".build/release-feed/$TAG"
-   mkdir -p "$FEED_DIR"
-   cp "$DMG" "$FEED_DIR/"
-   .build/artifacts/sparkle/Sparkle/bin/generate_appcast \
-     --account com.xuanci.isnapnuke \
-     --download-url-prefix "https://github.com/League2EB/iSnapNuke/releases/download/$TAG/" \
-     -o appcast.xml \
-     "$FEED_DIR"
-   ```
-
-4. Copy `Packaging/update-policy.template.json`, set the new versions, build numbers, release notes, and ISO-8601 publication date. Sign it:
-
-   ```sh
-   swift run iSnapNukeReleaseTool sign-policy \
-     --policy /path/to/policy-input.json \
-     --private-key "$HOME/.config/iSnapNuke/update-policy.key" \
-     --output update-policy.json
-   swift run iSnapNukeReleaseTool verify-policy \
-     --policy update-policy.json \
-     --public-key "<policy public key>"
-   ```
-
-5. Commit all release changes, create the matching tag at that commit, validate it, then push the branch and tag over SSH:
-
-   ```sh
-   git tag -a "$TAG" -m "iSnapNuke $VERSION"
-   ./scripts/validate-release.sh "$TAG"
-   git push origin main "$TAG"
-   ```
-
-6. Create the public GitHub Release with the Keychain-backed PAT and upload the DMG:
-
-   ```sh
-   TOKEN="$(security find-generic-password \
-     -a League2EB -s iSnapNuke-gh-pat -w)"
-   GH_TOKEN="$TOKEN" /opt/homebrew/bin/gh release create "$TAG" "$DMG" \
-     --repo League2EB/iSnapNuke \
-     --title "iSnapNuke $VERSION" \
-     --notes-file /path/to/release-notes.md
-   unset TOKEN
-   ```
-
-7. Download the public release asset again, compare its SHA-256 checksum with the local DMG, and repeat the DMG, stapler, code-signing, and Gatekeeper checks before announcing the release.
-
-To publish a non-mandatory update, keep `minimumSupportedBuild` at the previous supported build. Only raise it after the newer GitHub Release asset is publicly downloadable and installs correctly. Never lower an existing minimum build: clients reject a policy rollback.
 
 <a id="language-support"></a>
 
@@ -320,7 +183,7 @@ Not exactly. It measures data referenced only by a snapshot and is a useful esti
 
 ## Privacy
 
-iSnapNuke operates locally. It does not install a background service, collect telemetry, or upload snapshot data. Snapshot operations have no network communication. Direct-download builds make HTTPS requests to GitHub only to retrieve the signed update policy and, after you choose **Update Now**, the signed release disk image.
+iSnapNuke operates locally. It does not install a background service, collect telemetry, or upload snapshot data. Snapshot operations have no network communication. Public DMG builds connect to GitHub over HTTPS only to check for signed updates and, after you choose to install one, to download it. Default source builds do not enable in-app updates.
 
 <a id="license"></a>
 

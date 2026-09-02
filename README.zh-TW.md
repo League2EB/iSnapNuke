@@ -15,7 +15,7 @@
 </p>
 
 <p align="center">
-  <a href="#features">功能</a> · <a href="#why">製作原因</a> · <a href="#screenshots">螢幕截圖</a> · <a href="#safety">安全規則</a> · <a href="#force-mode">管他去死模式</a> · <a href="#how-it-works">運作方式</a> · <a href="#installation">安裝</a> · <a href="#updates">版本更新</a> · <a href="#build-from-source">從原始碼建置</a> · <a href="#release-process">發布流程</a> · <a href="#faq">常見問題</a>
+  <a href="#features">功能</a> · <a href="#why">製作原因</a> · <a href="#screenshots">螢幕截圖</a> · <a href="#safety">安全規則</a> · <a href="#force-mode">管他去死模式</a> · <a href="#how-it-works">運作方式</a> · <a href="#installation">安裝</a> · <a href="#updates">版本更新</a> · <a href="#build-from-source">從原始碼建置</a> · <a href="#faq">常見問題</a>
 </p>
 
 ---
@@ -126,30 +126,7 @@ diskutil apfs deleteSnapshot <device> -uuid <uuid> -wait
 
 ## 版本更新
 
-iSnapNuke 的直接下載版沒有應用程式後端。它從此 repository 讀取小型且經簽章的更新政策，並使用已簽章的 Sparkle 磁碟映像檔安裝更新。
-
-- 目前 build 落後最新 build、但仍被支援時，App 顯示可關閉的「有可用更新」提示。
-- 目前 build 小於 `minimumSupportedBuild` 時，App 會以「必須更新」畫面取代主畫面；只可更新、重新檢查政策或退出。
-- App 會快取最後一份有效政策。GitHub 無法連線時，已快取的強制更新政策仍會生效；首次啟動且沒有快取時則放行，不會只因暫時無法取得政策而鎖住離線使用者。
-- 政策請求使用 HTTPS 與 ETag 驗證，不會包含 APFS metadata、帳號資訊或遙測資料。
-
-政策和 Sparkle appcast 位於固定 repository 路徑：
-
-- `https://raw.githubusercontent.com/League2EB/iSnapNuke/main/update-policy.json`
-- `https://raw.githubusercontent.com/League2EB/iSnapNuke/main/appcast.xml`
-
-### 本機更新流程 Demo
-
-Demo 不會下載封存檔、不會寫入更新政策快取，也不會執行 `diskutil`；它同時使用 App 既有的安全快照 Demo 模式。
-
-```sh
-./scripts/demo-update.sh optional  # 顯示「有可用更新」
-./scripts/demo-update.sh required  # 顯示「必須更新」阻擋畫面
-./scripts/demo-update.sh upToDate  # 顯示一般 Demo App
-./scripts/demo-update.sh offline   # 驗證首次離線放行
-```
-
-前兩種情境點選「立即更新」可驗證安裝交接；App 會提示這是本機 Demo，不會安裝任何檔案。
+公開 DMG 版本可向 GitHub 檢查已簽章更新。若有可用更新，iSnapNuke 會提供安裝選項；若目前版本不再受支援，App 會要求更新後才能繼續使用。
 
 <a id="build-from-source"></a>
 
@@ -167,123 +144,9 @@ open dist/iSnapNuke.app
 
 從原始碼建置需要 Xcode Command Line Tools。
 
+預設原始碼建置不包含公開更新金鑰，因此不會啟用 App 內更新。需要新版時，請取得較新的原始碼版本後重新建置。
+
 若 Gatekeeper 阻擋首次啟動，請在 Finder 中按住 Control 點擊 App，然後選擇「打開」。關閉主視窗時，App 就會結束。
-
-<a id="release-process"></a>
-
-## 發布流程
-
-不可只發布 bare tag。每個公開版本都必須包含 GitHub Release 資產、已簽章的 Sparkle appcast 項目，以及已簽章的更新政策。
-
-### 一次性金鑰設定
-
-1. 在此 repository 外建立政策簽章金鑰：
-
-   ```sh
-   swift run iSnapNukeReleaseTool generate-policy-key \
-     --private-key "$HOME/.config/iSnapNuke/update-policy.key"
-   ```
-
-   保存輸出的公開金鑰。私鑰必須保密，不能 commit。
-
-2. 使用 Sparkle 官方 [`generate_keys`](https://sparkle-project.org/documentation/publishing/) 工具在 Keychain 建立 Sparkle EdDSA 金鑰組。本專案使用 account `com.xuanci.isnapnuke`，並保存輸出的公開金鑰。
-
-3. 安裝 Developer ID Application 憑證，並將 App Store Connect notarization 憑證存入 `notarytool` Keychain profile。以下命令使用本機 profile `iSnapNuke-notary`。
-
-4. 建立只允許存取 `League2EB/iSnapNuke`、權限為 `Contents: Read and write` 的 fine-grained GitHub PAT，再以 service `iSnapNuke-gh-pat`、account `League2EB` 存入 Keychain。使用隱藏輸入，避免 token 出現在 shell history：
-
-   ```zsh
-   read -s "TOKEN?GitHub PAT: "; print
-   security add-generic-password -U \
-     -a League2EB \
-     -s iSnapNuke-gh-pat \
-     -w "$TOKEN"
-   unset TOKEN
-   ```
-
-   Git push 仍使用 SSH；PAT 只供 `gh` 呼叫 Release API。
-
-5. 在安全的 release shell 或 CI secret store 中匯出公開金鑰與簽章 identity：
-
-   ```sh
-   export UPDATE_POLICY_PUBLIC_KEY="<policy public key>"
-   export SPARKLE_PUBLIC_KEY="<Sparkle public key>"
-   export SIGNING_IDENTITY="Developer ID Application: XuanCi Tech. Co., Ltd. (T46J69KN43)"
-   export NOTARY_PROFILE="iSnapNuke-notary"
-   ```
-
-   本專案刻意不保存憑證、私鑰、token 或 notarization 憑證。
-
-### 每次發布檢查表
-
-1. 更新兩個版本欄位，且 build 必須遞增：
-
-   ```sh
-   ./scripts/set-version.sh 1.1.0 2
-   ```
-
-2. 在同一個已設定安全 release 環境變數的 shell 中，建置並驗證 Developer ID App，接著建立、簽署、notarize、staple 與驗證 Apple Silicon DMG：
-
-   ```sh
-   REQUIRE_UPDATE_KEYS=1 ./scripts/build-app.sh
-   ./scripts/verify-app-bundle.sh
-   NOTARIZE=1 ./scripts/package-update.sh
-   ```
-
-   產物為 `dist/release/iSnapNuke-1.1.0-2-arm64.dmg`，內容包含 `iSnapNuke.app` 與 `/Applications` 捷徑。
-
-3. 使用最終 notarized DMG 產生含 EdDSA 簽章的 Sparkle appcast 項目：
-
-   ```sh
-   VERSION=1.1.0
-   BUILD=2
-   TAG="v$VERSION"
-   DMG="dist/release/iSnapNuke-$VERSION-$BUILD-arm64.dmg"
-   FEED_DIR=".build/release-feed/$TAG"
-   mkdir -p "$FEED_DIR"
-   cp "$DMG" "$FEED_DIR/"
-   .build/artifacts/sparkle/Sparkle/bin/generate_appcast \
-     --account com.xuanci.isnapnuke \
-     --download-url-prefix "https://github.com/League2EB/iSnapNuke/releases/download/$TAG/" \
-     -o appcast.xml \
-     "$FEED_DIR"
-   ```
-
-4. 複製 `Packaging/update-policy.template.json`，填入新版號、build、更新說明與 ISO-8601 發布時間，然後簽章：
-
-   ```sh
-   swift run iSnapNukeReleaseTool sign-policy \
-     --policy /path/to/policy-input.json \
-     --private-key "$HOME/.config/iSnapNuke/update-policy.key" \
-     --output update-policy.json
-   swift run iSnapNukeReleaseTool verify-policy \
-     --policy update-policy.json \
-     --public-key "<policy public key>"
-   ```
-
-5. Commit 所有發布改動，在該 commit 建立對應 tag、執行驗證，再透過 SSH push branch 與 tag：
-
-   ```sh
-   git tag -a "$TAG" -m "iSnapNuke $VERSION"
-   ./scripts/validate-release.sh "$TAG"
-   git push origin main "$TAG"
-   ```
-
-6. 使用 Keychain 中的 PAT 建立公開 GitHub Release 並上傳 DMG：
-
-   ```sh
-   TOKEN="$(security find-generic-password \
-     -a League2EB -s iSnapNuke-gh-pat -w)"
-   GH_TOKEN="$TOKEN" /opt/homebrew/bin/gh release create "$TAG" "$DMG" \
-     --repo League2EB/iSnapNuke \
-     --title "iSnapNuke $VERSION" \
-     --notes-file /path/to/release-notes.md
-   unset TOKEN
-   ```
-
-7. 重新下載公開資產，將 SHA-256 checksum 與本機 DMG 比對，並再次執行 DMG、stapler、code-signing 與 Gatekeeper 驗證後再正式公告。
-
-要發布非強制更新，`minimumSupportedBuild` 要維持在上一個仍支援的 build。只有確定新的 GitHub Release 資產可公開下載並能正常安裝後，才提高此值。不可降低已發布的最低 build，客戶端會拒絕政策回滾。
 
 <a id="language-support"></a>
 
@@ -320,7 +183,7 @@ App 會將它們的名稱辨識為來源推斷，但一般模式的刪除資格�
 
 ## 隱私
 
-iSnapNuke 在本機運作，不會安裝背景服務、不收集遙測資料，也不上傳快照資料。快照操作不包含網路通訊。直接下載版僅在檢查版本更新時，以 HTTPS 向 GitHub 取得已簽章更新政策；只有你點選「立即更新」後，才會下載已簽章發布磁碟映像檔。
+iSnapNuke 在本機運作，不會安裝背景服務、不收集遙測資料，也不上傳快照資料。快照操作不包含網路通訊。公開 DMG 版本只在檢查已簽章更新時，以 HTTPS 連線至 GitHub；只有你選擇安裝更新後才會下載它。預設原始碼建置不會啟用 App 內更新。
 
 <a id="license"></a>
 
