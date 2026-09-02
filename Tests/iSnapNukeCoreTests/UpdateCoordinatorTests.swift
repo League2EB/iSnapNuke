@@ -71,4 +71,51 @@ final class UpdateCoordinatorTests: XCTestCase {
 
         XCTAssertEqual(installer.checkCount, 1)
     }
+
+    func testOptionalUpdateWaitsForSheetDismissalBeforeInstalling() async {
+        let policy = makeUpdatePolicy(latestBuild: 2, minimumBuild: 1)
+        let installer = RecordingUpdateInstaller()
+        let coordinator = UpdateCoordinator(
+            currentVersion: makeUpdateVersion(build: 1),
+            evaluator: StubUpdatePolicyEvaluator(
+                cached: UpdatePolicyEvaluation(decision: .optional(policy), source: .cache),
+                refreshed: UpdatePolicyEvaluation(decision: .optional(policy), source: .network)
+            ),
+            installer: installer,
+            deferralStore: InMemoryUpdateDeferralStore()
+        )
+
+        await coordinator.start()
+        XCTAssertEqual(coordinator.state, .optional(policy))
+
+        coordinator.beginOptionalUpdateInstallation()
+
+        XCTAssertEqual(coordinator.state, .allowed)
+        XCTAssertEqual(installer.checkCount, 0)
+
+        coordinator.optionalUpdateSheetDidDismiss()
+        coordinator.optionalUpdateSheetDidDismiss()
+
+        XCTAssertEqual(installer.checkCount, 1)
+    }
+
+    func testDeferringOptionalUpdateDoesNotInstallWhenSheetDismisses() async {
+        let policy = makeUpdatePolicy(latestBuild: 2, minimumBuild: 1)
+        let installer = RecordingUpdateInstaller()
+        let coordinator = UpdateCoordinator(
+            currentVersion: makeUpdateVersion(build: 1),
+            evaluator: StubUpdatePolicyEvaluator(
+                cached: UpdatePolicyEvaluation(decision: .optional(policy), source: .cache),
+                refreshed: UpdatePolicyEvaluation(decision: .optional(policy), source: .network)
+            ),
+            installer: installer,
+            deferralStore: InMemoryUpdateDeferralStore()
+        )
+
+        await coordinator.start()
+        coordinator.deferOptionalUpdate()
+        coordinator.optionalUpdateSheetDidDismiss()
+
+        XCTAssertEqual(installer.checkCount, 0)
+    }
 }

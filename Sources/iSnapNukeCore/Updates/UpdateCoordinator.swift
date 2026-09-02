@@ -65,6 +65,7 @@ public final class UpdateCoordinator: ObservableObject {
     private var hasStarted = false
     private var blocksRequiredTransition = false
     private var pendingRequiredPolicy: UpdatePolicy?
+    private var installsOptionalUpdateAfterSheetDismissal = false
 
     public init(
         currentVersion: AppVersion,
@@ -127,11 +128,24 @@ public final class UpdateCoordinator: ObservableObject {
 
     public func deferOptionalUpdate() {
         guard case let .optional(policy) = state else { return }
+        installsOptionalUpdateAfterSheetDismissal = false
         deferralStore.deferredBuild = policy.latestBuild
         state = .allowed
     }
 
     public func installUpdate() {
+        installer.checkForUpdates()
+    }
+
+    public func beginOptionalUpdateInstallation() {
+        guard case .optional = state else { return }
+        installsOptionalUpdateAfterSheetDismissal = true
+        state = .allowed
+    }
+
+    public func optionalUpdateSheetDidDismiss() {
+        guard installsOptionalUpdateAfterSheetDismissal else { return }
+        installsOptionalUpdateAfterSheetDismissal = false
         installer.checkForUpdates()
     }
 

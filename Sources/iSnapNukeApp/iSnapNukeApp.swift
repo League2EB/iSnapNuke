@@ -125,12 +125,13 @@ struct iSnapNukeApp: App {
                         updateCoordinator.deferOptionalUpdate()
                     }
                 }
-            )
+            ),
+            onDismiss: updateCoordinator.optionalUpdateSheetDidDismiss
         ) {
             if case let .optional(policy) = updateCoordinator.state {
                 OptionalUpdateSheet(
                     policy: policy,
-                    onInstall: updateCoordinator.installUpdate,
+                    onInstall: updateCoordinator.beginOptionalUpdateInstallation,
                     onLater: updateCoordinator.deferOptionalUpdate
                 )
             }
