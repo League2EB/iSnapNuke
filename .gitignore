@@ -18,3 +18,8 @@ xcuserdata/
 dist/
 *.dSYM
 *.xcarchive
+
+# Update signing material must remain outside the repository.
+*.key
+*.privatekey
+.sparkle_private_key

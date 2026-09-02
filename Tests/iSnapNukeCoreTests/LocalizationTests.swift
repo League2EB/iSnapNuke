@@ -116,6 +116,16 @@ final class LocalizationTests: XCTestCase {
             "demo.scenario.permission_denied",
             "demo.scenario.missing",
             "demo.scenario.command_failed",
+            "update.checking_title",
+            "update.optional_title",
+            "update.required_title",
+            "update.install_now",
+            "update.later",
+            "update.retry",
+            "update.quit",
+            "update.check_for_updates",
+            "update.demo_install_title",
+            "update.demo_install_body",
         ]
 
         for key in keys {

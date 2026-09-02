@@ -8,11 +8,16 @@ let package = Package(
     products: [
         .library(name: "iSnapNukeCore", targets: ["iSnapNukeCore"]),
         .executable(name: "iSnapNuke", targets: ["iSnapNukeApp"]),
+        .executable(name: "iSnapNukeReleaseTool", targets: ["iSnapNukeReleaseTool"]),
     ],
     dependencies: [
         .package(
             url: "https://github.com/simibac/ConfettiSwiftUI.git",
             from: "3.0.0"
+        ),
+        .package(
+            url: "https://github.com/sparkle-project/Sparkle.git",
+            exact: "2.9.6"
         ),
     ],
     targets: [
@@ -32,8 +37,14 @@ let package = Package(
                 "iSnapNukeCore",
                 "iSnapNukeLocalization",
                 .product(name: "ConfettiSwiftUI", package: "ConfettiSwiftUI"),
+                .product(name: "Sparkle", package: "Sparkle"),
             ],
             path: "Sources/iSnapNukeApp"
+        ),
+        .executableTarget(
+            name: "iSnapNukeReleaseTool",
+            dependencies: ["iSnapNukeCore"],
+            path: "Sources/iSnapNukeReleaseTool"
         ),
         .testTarget(
             name: "iSnapNukeCoreTests",

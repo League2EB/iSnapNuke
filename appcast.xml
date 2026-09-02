@@ -1,0 +1,20 @@
+<?xml version="1.0" standalone="yes"?><!-- sparkle-sign-warning:
+IMPORTANT: This file was signed by Sparkle. Any modifications to this file requires re-signing this file with generate_appcast or sign_update! The signed signature will be embedded at the end of this file.
+--><rss xmlns:sparkle="http://www.andymatuschak.org/xml-namespaces/sparkle" version="2.0">
+    <channel>
+        <title>iSnapNuke</title>
+        <item>
+            <title>1.0.0</title>
+            <pubDate>Wed, 02 Sep 2026 11:34:19 +0800</pubDate>
+            <link>https://github.com/League2EB/iSnapNuke/releases/tag/v1.0.0</link>
+            <sparkle:version>1</sparkle:version>
+            <sparkle:shortVersionString>1.0.0</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <sparkle:hardwareRequirements>arm64</sparkle:hardwareRequirements>
+            <enclosure url="https://github.com/League2EB/iSnapNuke/releases/download/v1.0.0/iSnapNuke-1.0.0-1-arm64.dmg" length="3002239" type="application/octet-stream" sparkle:edSignature="1K0IxKnVp6HtFPJ/wpGMR7THWouGytsu+yOoXRAw0ADzYx7jazqJgsfWmwSOqYWNsXR2jGM8uvxP3EmLFnhKCQ=="></enclosure>
+        </item>
+    </channel>
+</rss><!-- sparkle-signatures:
+edSignature: D/g7M4RiR0DlQFN2/fldSJ37nvK9771Eoze3WIseDkdhCKBsfUvw48TUxEoXRuGHzfpGi1UThehHdXg8ftWRAA==
+length: 1216
+-->

@@ -1,0 +1,12 @@
+{
+  "schemaVersion": 1,
+  "latestVersion": "1.0.0",
+  "latestBuild": 1,
+  "minimumSupportedVersion": "1.0.0",
+  "minimumSupportedBuild": 1,
+  "releaseNotes": {
+    "en": "Initial Apple Silicon release.",
+    "zh-Hant": "Apple Silicon 初始版本。"
+  },
+  "publishedAt": "2026-09-01T00:00:00Z"
+}

@@ -31,5 +31,19 @@
     <string>14.0</string>
     <key>NSHighResolutionCapable</key>
     <true/>
+    <key>SUEnableAutomaticChecks</key>
+    <false/>
+    <key>SUFeedURL</key>
+    <string>https://raw.githubusercontent.com/League2EB/iSnapNuke/main/appcast.xml</string>
+    <key>SUPublicEDKey</key>
+    <string></string>
+    <key>SURequireSignedFeed</key>
+    <true/>
+    <key>SUVerifyUpdateBeforeExtraction</key>
+    <true/>
+    <key>iSnapNukeUpdatePolicyPublicKey</key>
+    <string></string>
+    <key>iSnapNukeUpdatePolicyURL</key>
+    <string>https://raw.githubusercontent.com/League2EB/iSnapNuke/main/update-policy.json</string>
 </dict>
 </plist>
