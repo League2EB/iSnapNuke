@@ -1,15 +1,15 @@
 {
   "policy" : {
-    "latestBuild" : 1,
-    "latestVersion" : "1.0.0",
+    "latestBuild" : 2,
+    "latestVersion" : "1.0.1",
     "minimumSupportedBuild" : 1,
     "minimumSupportedVersion" : "1.0.0",
-    "publishedAt" : "2026-09-02T03:35:37Z",
+    "publishedAt" : "2026-09-02T08:07:17Z",
     "releaseNotes" : {
-      "en" : "Initial Apple Silicon release.",
-      "zh-Hant" : "Apple Silicon 初始版本。"
+      "en" : "- Updated the English documentation for viewing and safely deleting APFS snapshots.\n- Added English screenshots covering the snapshot list, deletion confirmation, and successful deletion.",
+      "zh-Hant" : "- 更新繁體中文文件，說明如何檢視及安全刪除 APFS 快照。\n- 新增繁體中文螢幕截圖，涵蓋快照列表、刪除確認及成功刪除畫面。"
     },
     "schemaVersion" : 1
   },
-  "signature" : "7qp16h5qWW4MfpOgiN7xyD1ajLm7QK5n5G0JX1OYpgU93G4UzsF4vTkOpFF5LYy62CcgDsSA7vlYNmioTfXzBw=="
+  "signature" : "6VU2Yj27FmxiVbRSDipiMegXWhm4U/8FI7eW5EFoGYMu8UfDEK3fddTVnaU/CPGbbKuKMYOu8NXANX+ZnhAqAg=="
 }
