@@ -6,6 +6,27 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     <channel>
         <title>iSnapNuke</title>
         <item>
+            <title>1.0.3</title>
+            <pubDate>Thu, 03 Sep 2026 10:03:27 +0800</pubDate>
+            <link>https://github.com/League2EB/iSnapNuke/releases/tag/v1.0.3</link>
+            <sparkle:version>4</sparkle:version>
+            <sparkle:shortVersionString>1.0.3</sparkle:shortVersionString>
+            <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
+            <description sparkle:format="markdown"><![CDATA[# iSnapNuke 1.0.3
+
+## English
+
+- Added Universal 2 builds for native support on both Intel and Apple Silicon Macs.
+- Updated the README documentation.
+
+## 繁體中文
+
+- 新增 Universal 2 版本，原生支援 Intel 與 Apple Silicon Mac。
+- 更新了 README 文件。
+]]></description>
+            <enclosure url="https://github.com/League2EB/iSnapNuke/releases/download/v1.0.3/iSnapNuke-1.0.3-4-universal.dmg" length="3407316" type="application/octet-stream" sparkle:edSignature="pWbUXQWPb4HfLpWpyJiwEiquEh0G4jd5MkDQmIIvfvHaQlvjOsnaLN82D0JtuLbc/Tz2Qsvl1hR712Awk4GjDg=="/>
+        </item>
+        <item>
             <title>1.0.2</title>
             <pubDate>Wed, 02 Sep 2026 19:47:53 +0800</pubDate>
             <link>https://github.com/League2EB/iSnapNuke/releases/tag/v1.0.2</link>
@@ -30,6 +51,6 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: RDtkCucvCM/xA2KPX0RnjFLOUW4H62neTgSzr0XjoyoB/FyAGxbQesZRV+XJG9cIBpTQU2pxNNgOgjXKtHMqAw==
-length: 1579
+edSignature: oJ+bapmu8JaCOU4MjGCAWaTRj9o70BgdevC0sDALJtpmnEzeeR66tQI+jBK56CJIWocaU47PknUSO3r2RsgnBg==
+length: 2629
 -->

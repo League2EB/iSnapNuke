@@ -1,15 +1,15 @@
 {
   "policy" : {
-    "latestBuild" : 3,
-    "latestVersion" : "1.0.2",
+    "latestBuild" : 4,
+    "latestVersion" : "1.0.3",
     "minimumSupportedBuild" : 3,
     "minimumSupportedVersion" : "1.0.2",
-    "publishedAt" : "2026-09-02T11:47:53Z",
+    "publishedAt" : "2026-09-03T02:03:28Z",
     "releaseNotes" : {
-      "en" : "- Fixed an issue that could prevent iSnapNuke from relaunching after an update is installed.\n- Improved update installation reliability.",
-      "zh-Hant" : "- 修正安裝更新後可能無法重新啟動 iSnapNuke 的問題。\n- 提升更新安裝的可靠性。"
+      "en" : "- Added Universal 2 builds for native support on both Intel and Apple Silicon Macs.\n- Updated the README documentation.",
+      "zh-Hant" : "- 新增 Universal 2 版本，原生支援 Intel 與 Apple Silicon Mac。\n- 更新了 README 文件。"
     },
     "schemaVersion" : 1
   },
-  "signature" : "3+cP3L17MvsSzClnF9hYatVvCZCiRyLnJEjTyeMtFW5pSOLPC5NAGb5ShAGMZX0Fql70XuyaX64bgn2HNySMCg=="
+  "signature" : "dalaMgcxhykfTDXt0nQ9Rxu4pXYDenClxSSI6GdFTlwgz63lS3oxuhk3FMg7IjxI7EhsW5DQqzyN3F+Eo1XHDQ=="
 }
