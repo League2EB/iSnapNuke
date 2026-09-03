@@ -124,12 +124,12 @@ diskutil apfs deleteSnapshot <device> -uuid <uuid> -wait
 
 ### 系統需求
 
-- Apple Silicon Mac
+- Intel 或 Apple Silicon Mac
 - macOS 14 或以上
 
 ### 預先建置版本
 
-請從 [GitHub Releases](https://github.com/League2EB/iSnapNuke/releases) 下載 Apple Silicon DMG，打開後將 `iSnapNuke.app` 拖到 Applications 捷徑。
+請從 [GitHub Releases](https://github.com/League2EB/iSnapNuke/releases) 下載 Universal DMG，打開後將 `iSnapNuke.app` 拖到 Applications 捷徑。Universal 支援前發布的版本仍僅支援 Apple Silicon。
 
 公開建置版本均使用 Developer ID 憑證簽署，並通過 Apple notarization。
 
@@ -151,9 +151,9 @@ swift test
 open dist/iSnapNuke.app
 ```
 
-`build-app.sh` 會在 `dist/iSnapNuke.app` 產生 Release App bundle，從 `Assets/AppIcon/iSnapNuke.jpg` 建立 `.icns` 圖示，並以 ad-hoc 方式簽署 bundle 供本機使用。
+`build-app.sh` 會分別產生 `arm64` 與 `x86_64` 的 Release 產品，合併為 `dist/iSnapNuke.app` 中的 Universal 2 App bundle，從 `Assets/AppIcon/iSnapNuke.jpg` 建立 `.icns` 圖示，並以 ad-hoc 方式簽署 bundle 供本機使用。
 
-從原始碼建置需要 Xcode Command Line Tools。
+從原始碼建置需要可同時編譯 `arm64` 與 `x86_64` 的 macOS SDK 與 Xcode Command Line Tools。
 
 預設原始碼建置不包含公開更新金鑰，因此不會啟用 App 內更新。需要新版時，請取得較新的原始碼版本後重新建置。
 

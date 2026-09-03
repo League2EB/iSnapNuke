@@ -5,8 +5,8 @@
   "minimumSupportedVersion": "1.0.0",
   "minimumSupportedBuild": 1,
   "releaseNotes": {
-    "en": "Initial Apple Silicon release.",
-    "zh-Hant": "Apple Silicon 初始版本。"
+    "en": "Initial Universal release.",
+    "zh-Hant": "初始 Universal 版本。"
   },
   "publishedAt": "2026-09-01T00:00:00Z"
 }

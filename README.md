@@ -123,12 +123,12 @@ If normal deletion fails because of permissions, the result screen can offer a r
 
 ### System Requirements
 
-- Apple Silicon Mac
+- Intel or Apple Silicon Mac
 - macOS 14 or later
 
 ### Prebuilt Releases
 
-Download the Apple Silicon DMG from the [GitHub Releases page](https://github.com/League2EB/iSnapNuke/releases), open it, and drag `iSnapNuke.app` to the Applications shortcut.
+Download the Universal DMG from the [GitHub Releases page](https://github.com/League2EB/iSnapNuke/releases), open it, and drag `iSnapNuke.app` to the Applications shortcut. Releases published before Universal support remain Apple Silicon-only.
 
 Public builds are signed with a Developer ID certificate and notarized by Apple.
 
@@ -150,9 +150,9 @@ swift test
 open dist/iSnapNuke.app
 ```
 
-`build-app.sh` builds a Release app bundle at `dist/iSnapNuke.app`, generates the `.icns` app icon from `Assets/AppIcon/iSnapNuke.jpg`, and ad-hoc signs the bundle for local use.
+`build-app.sh` builds separate `arm64` and `x86_64` Release products, combines them into a Universal 2 app bundle at `dist/iSnapNuke.app`, generates the `.icns` app icon from `Assets/AppIcon/iSnapNuke.jpg`, and ad-hoc signs the bundle for local use.
 
-Building from source requires the Xcode Command Line Tools.
+Building from source requires Xcode Command Line Tools with a macOS SDK that can build both `arm64` and `x86_64`.
 
 Default source builds do not include the public update keys, so in-app updates are disabled. To update this build, pull a newer source revision and build it again.
 
