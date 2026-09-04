@@ -115,7 +115,16 @@ public struct DiskUtilityScanner: Sendable {
             throw DiskUtilityError.invalidPropertyList
         }
 
-        let privateSizes = (try? sizeProvider.privateSizes(for: volume)) ?? [:]
+        let privateSizes: [UUID: Int64]
+        do {
+            privateSizes = try sizeProvider.privateSizes(for: volume)
+        } catch {
+            SnapshotScanDiagnostics.logPrivateSizeReadFailure(
+                for: volume,
+                error: error
+            )
+            privateSizes = [:]
+        }
 
         return entries.map { entry in
             let entry = SnapshotPlist(dictionary: entry as? [String: Any])

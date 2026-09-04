@@ -26,6 +26,10 @@
 "action.ok" = "知道了";
 "action.cancel" = "取消";
 "action.refresh" = "重新整理";
+"action.select_all_eligible" = "全選可刪除快照";
+"action.select_all_eligible_hint" = "選取所有符合一般刪除條件的快照，不會選取受保護快照。";
+"action.deselect_all" = "取消全選";
+"action.deselect_all_hint" = "取消選取所有符合一般刪除條件的快照，不會取消選取受保護快照。";
 "action.delete_permanently" = "永久刪除";
 "action.retry_admin" = "以管理員權限重試";
 "action.done" = "完成";

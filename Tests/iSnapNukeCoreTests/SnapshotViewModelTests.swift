@@ -131,6 +131,121 @@ final class SnapshotViewModelTests: XCTestCase {
         XCTAssertTrue(viewModel.selectedIDs.isEmpty)
     }
 
+    func testRefreshHidesOnlySnapshotsWithExactZeroPrivateSize() async {
+        let zeroSizeEligibleTarget = makeEligibleTarget(index: 0, privateSizeBytes: 0)
+        let zeroSizeProtectedTarget = makeProtectedTarget(index: 0, privateSizeBytes: 0)
+        let unavailableSizeTarget = makeEligibleTarget(index: 1, privateSizeBytes: nil)
+        let positiveSizeTarget = makeProtectedTarget(index: 1, privateSizeBytes: 1_024)
+        let store = InMemorySnapshotStore(
+            snapshots: [
+                zeroSizeEligibleTarget,
+                zeroSizeProtectedTarget,
+                unavailableSizeTarget,
+                positiveSizeTarget,
+            ]
+        )
+        let viewModel = SnapshotViewModel(
+            scanner: store,
+            deletionService: store,
+            adminDeletionService: store,
+            pauser: ImmediateSnapshotDeletionPauser()
+        )
+
+        await viewModel.refresh()
+
+        XCTAssertEqual(
+            viewModel.snapshots.map(\.id),
+            [unavailableSizeTarget.id, positiveSizeTarget.id]
+        )
+        XCTAssertEqual(viewModel.deletableCount, 1)
+        XCTAssertEqual(viewModel.protectedCount, 1)
+
+        viewModel.selectedIDs = [zeroSizeEligibleTarget.id, unavailableSizeTarget.id]
+        await viewModel.refresh()
+
+        XCTAssertEqual(viewModel.selectedIDs, [unavailableSizeTarget.id])
+    }
+
+    func testToggleAllEligibleSnapshotsAddsThenRemovesOnlyEligibleTargets() async {
+        let eligibleTargets = makeTargets(count: 2)
+        let protectedTarget = makeProtectedTarget(index: 0)
+        let store = InMemorySnapshotStore(snapshots: eligibleTargets + [protectedTarget])
+        let viewModel = SnapshotViewModel(
+            scanner: store,
+            deletionService: store,
+            adminDeletionService: store,
+            pauser: ImmediateSnapshotDeletionPauser()
+        )
+
+        await viewModel.refresh()
+
+        XCTAssertTrue(viewModel.canToggleAllEligibleSnapshots)
+        XCTAssertFalse(viewModel.areAllEligibleSnapshotsSelected)
+
+        viewModel.toggleAllEligibleSnapshots()
+
+        XCTAssertEqual(viewModel.selectedIDs, Set(eligibleTargets.map(\.id)))
+        XCTAssertEqual(viewModel.selectedSnapshots.map(\.id), eligibleTargets.map(\.id))
+        XCTAssertTrue(viewModel.canToggleAllEligibleSnapshots)
+        XCTAssertTrue(viewModel.areAllEligibleSnapshotsSelected)
+
+        viewModel.toggleAllEligibleSnapshots()
+
+        XCTAssertTrue(viewModel.selectedIDs.isEmpty)
+        XCTAssertFalse(viewModel.areAllEligibleSnapshotsSelected)
+    }
+
+    func testToggleAllEligibleSnapshotsPreservesProtectedSnapshotsInForceMode() async {
+        let eligibleTargets = makeTargets(count: 2)
+        let protectedTarget = makeProtectedTarget(index: 0)
+        let store = InMemorySnapshotStore(snapshots: eligibleTargets + [protectedTarget])
+        let viewModel = SnapshotViewModel(
+            scanner: store,
+            deletionService: store,
+            adminDeletionService: store,
+            pauser: ImmediateSnapshotDeletionPauser()
+        )
+
+        await viewModel.refresh()
+        viewModel.setForceDeletionEnabled(true)
+        viewModel.toggleAllEligibleSnapshots()
+
+        XCTAssertEqual(viewModel.selectedIDs, Set(eligibleTargets.map(\.id)))
+
+        viewModel.toggleSelection(for: eligibleTargets[0])
+        viewModel.toggleSelection(for: protectedTarget)
+        viewModel.toggleAllEligibleSnapshots()
+
+        XCTAssertEqual(
+            viewModel.selectedIDs,
+            Set(eligibleTargets.map(\.id) + [protectedTarget.id])
+        )
+
+        viewModel.toggleAllEligibleSnapshots()
+
+        XCTAssertEqual(viewModel.selectedIDs, Set([protectedTarget.id]))
+        XCTAssertFalse(viewModel.areAllEligibleSnapshotsSelected)
+    }
+
+    func testToggleAllEligibleSnapshotsIsUnavailableWithoutEligibleTargets() async {
+        let protectedTarget = makeProtectedTarget(index: 0)
+        let store = InMemorySnapshotStore(snapshots: [protectedTarget])
+        let viewModel = SnapshotViewModel(
+            scanner: store,
+            deletionService: store,
+            adminDeletionService: store,
+            pauser: ImmediateSnapshotDeletionPauser()
+        )
+
+        await viewModel.refresh()
+
+        XCTAssertFalse(viewModel.canToggleAllEligibleSnapshots)
+
+        viewModel.toggleAllEligibleSnapshots()
+
+        XCTAssertTrue(viewModel.selectedIDs.isEmpty)
+    }
+
     func testForceBatchContinuesAfterFailureAndUsesAdministratorMode() async {
         let targets = (0..<3).map { makeProtectedTarget(index: $0) }
         let store = InMemorySnapshotStore(
@@ -171,27 +286,40 @@ final class SnapshotViewModelTests: XCTestCase {
 
     private func makeTargets(count: Int) -> [AssessedSnapshot] {
         (0..<count).map { index in
-            let snapshot = APFSSnapshot(
-                uuid: UUID(),
-                name: "com.example.demo-\(index)",
-                xid: Int64(1_000 - index),
-                purgeable: true,
-                revertTo: false,
-                rootTo: false,
-                limitingContainerShrink: false,
-                privateSizeBytes: Int64(index + 1) * 1_024,
-                volume: APFSVolume(
-                    role: .data,
-                    deviceIdentifier: "disk3s1",
-                    name: "Data",
-                    mountPoint: "/System/Volumes/Data"
-                )
+            makeEligibleTarget(
+                index: index,
+                privateSizeBytes: Int64(index + 1) * 1_024
             )
-            return SnapshotSafetyEvaluator.assess(snapshot)
         }
     }
 
-    private func makeProtectedTarget(index: Int) -> AssessedSnapshot {
+    private func makeEligibleTarget(
+        index: Int,
+        privateSizeBytes: Int64?
+    ) -> AssessedSnapshot {
+        let snapshot = APFSSnapshot(
+            uuid: UUID(),
+            name: "com.example.demo-\(index)",
+            xid: Int64(1_000 - index),
+            purgeable: true,
+            revertTo: false,
+            rootTo: false,
+            limitingContainerShrink: false,
+            privateSizeBytes: privateSizeBytes,
+            volume: APFSVolume(
+                role: .data,
+                deviceIdentifier: "disk3s1",
+                name: "Data",
+                mountPoint: "/System/Volumes/Data"
+            )
+        )
+        return SnapshotSafetyEvaluator.assess(snapshot)
+    }
+
+    private func makeProtectedTarget(
+        index: Int,
+        privateSizeBytes: Int64? = 1_024
+    ) -> AssessedSnapshot {
         let snapshot = APFSSnapshot(
             uuid: UUID(),
             name: "com.apple.os.update-\(index)",
@@ -200,7 +328,7 @@ final class SnapshotViewModelTests: XCTestCase {
             revertTo: false,
             rootTo: false,
             limitingContainerShrink: false,
-            privateSizeBytes: Int64(index + 1) * 1_024,
+            privateSizeBytes: privateSizeBytes,
             volume: APFSVolume(
                 role: .system,
                 deviceIdentifier: "disk3s5",

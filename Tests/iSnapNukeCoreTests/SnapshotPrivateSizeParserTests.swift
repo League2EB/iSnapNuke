@@ -11,6 +11,15 @@ final class SnapshotPrivateSizeParserTests: XCTestCase {
         XCTAssertEqual(values, [uuid: 5_191_966_720])
     }
 
+    func testPreservesZeroPrivateSizeForSnapshotUUID() throws {
+        let uuid = UUID(uuidString: "0FA116AA-913B-4A65-95B0-D5769B5C8097")!
+        let data = makeRecord(uuid: uuid, privateSize: 0)
+
+        let values = try SnapshotPrivateSizeParser.parse(data: data, recordCount: 1)
+
+        XCTAssertEqual(values, [uuid: 0])
+    }
+
     func testRejectsTruncatedRecord() {
         XCTAssertThrowsError(
             try SnapshotPrivateSizeParser.parse(data: Data([0x80, 0, 0, 0]), recordCount: 1)

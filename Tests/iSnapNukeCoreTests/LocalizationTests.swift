@@ -142,6 +142,22 @@ final class LocalizationTests: XCTestCase {
             L10n.text("force.mode.acknowledge", language: .english),
             "Confirm and Turn On “Fuck It” Mode"
         )
+        XCTAssertEqual(
+            L10n.text("action.select_all_eligible", language: .english),
+            "Select All Eligible"
+        )
+        XCTAssertEqual(
+            L10n.text("action.select_all_eligible", language: .traditionalChinese),
+            "全選可刪除快照"
+        )
+        XCTAssertEqual(
+            L10n.text("action.deselect_all", language: .english),
+            "Deselect All"
+        )
+        XCTAssertEqual(
+            L10n.text("action.deselect_all", language: .traditionalChinese),
+            "取消全選"
+        )
     }
 
     func testRawResourcesHaveMatchingValidEntriesAndPrintfMarkers() throws {
@@ -152,8 +168,8 @@ final class LocalizationTests: XCTestCase {
             at: resourceURL(languageDirectory: "zh-Hant.lproj")
         )
 
-        XCTAssertEqual(englishEntries.count, 135)
-        XCTAssertEqual(traditionalChineseEntries.count, 135)
+        XCTAssertEqual(englishEntries.count, 139)
+        XCTAssertEqual(traditionalChineseEntries.count, 139)
 
         let englishKeys = englishEntries.map(\.key)
         let traditionalChineseKeys = traditionalChineseEntries.map(\.key)

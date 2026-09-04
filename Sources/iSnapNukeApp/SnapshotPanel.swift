@@ -150,6 +150,9 @@ struct SnapshotPanel: View {
                                 isForceDeletionEnabled: viewModel.isForceDeletionEnabled,
                                 rowAnimationDuration: viewModel.deletionTiming.rowAnimationDuration,
                                 isSelectable: viewModel.isSelectable,
+                                canToggleAllEligible: viewModel.canToggleAllEligibleSnapshots,
+                                areAllEligibleSelected: viewModel.areAllEligibleSnapshotsSelected,
+                                onToggleAllEligible: viewModel.toggleAllEligibleSnapshots,
                                 onToggle: viewModel.toggleSelection(for:)
                             )
                         }
@@ -288,20 +291,51 @@ private struct SnapshotSection: View {
     let isForceDeletionEnabled: Bool
     let rowAnimationDuration: TimeInterval
     let isSelectable: (AssessedSnapshot) -> Bool
+    let canToggleAllEligible: Bool
+    let areAllEligibleSelected: Bool
+    let onToggleAllEligible: () -> Void
     let onToggle: (AssessedSnapshot) -> Void
 
     var body: some View {
         VStack(alignment: .leading, spacing: 9) {
-            HStack {
+            HStack(spacing: 8) {
                 Label(role.localizedTitle, systemImage: role == .data ? "internaldrive" : "lock.shield")
                     .font(.subheadline.weight(.semibold))
                     .foregroundStyle(iSnapNukeTheme.foreground)
 
-                Spacer()
-
                 Text("\(snapshots.count)")
                     .font(.caption.weight(.bold))
                     .foregroundStyle(iSnapNukeTheme.mutedForeground)
+
+                Spacer()
+
+                if role == .data {
+                    Button(action: onToggleAllEligible) {
+                        Label(
+                            L10n.text(
+                                areAllEligibleSelected
+                                    ? "action.deselect_all"
+                                    : "action.select_all_eligible"
+                            ),
+                            systemImage: areAllEligibleSelected
+                                ? "xmark.circle"
+                                : "checkmark.circle"
+                        )
+                        .font(.caption.weight(.semibold))
+                    }
+                    .buttonStyle(.borderedProminent)
+                    .controlSize(.small)
+                    .tint(iSnapNukeTheme.accent)
+                    .foregroundStyle(iSnapNukeTheme.accentForeground)
+                    .disabled(!canToggleAllEligible)
+                    .accessibilityHint(
+                        L10n.text(
+                            areAllEligibleSelected
+                                ? "action.deselect_all_hint"
+                                : "action.select_all_eligible_hint"
+                        )
+                    )
+                }
             }
 
             ForEach(snapshots) { item in

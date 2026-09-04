@@ -46,6 +46,15 @@ public final class SnapshotViewModel: ObservableObject {
         snapshots.filter(\.safety.isDeletable).count
     }
 
+    public var canToggleAllEligibleSnapshots: Bool {
+        !isDeleting && !eligibleSnapshotIDs.isEmpty
+    }
+
+    public var areAllEligibleSnapshotsSelected: Bool {
+        let eligibleIDs = eligibleSnapshotIDs
+        return !eligibleIDs.isEmpty && eligibleIDs.isSubset(of: selectedIDs)
+    }
+
     public var protectedCount: Int {
         snapshots.count - deletableCount
     }
@@ -79,6 +88,16 @@ public final class SnapshotViewModel: ObservableObject {
             selectedIDs.remove(snapshot.id)
         } else {
             selectedIDs.insert(snapshot.id)
+        }
+    }
+
+    public func toggleAllEligibleSnapshots() {
+        guard canToggleAllEligibleSnapshots else { return }
+
+        if areAllEligibleSnapshotsSelected {
+            selectedIDs.subtract(eligibleSnapshotIDs)
+        } else {
+            selectedIDs.formUnion(eligibleSnapshotIDs)
         }
     }
 
@@ -151,6 +170,10 @@ public final class SnapshotViewModel: ObservableObject {
         return snapshot.safety.isDeletable
     }
 
+    private var eligibleSnapshotIDs: Set<UUID> {
+        Set(snapshots.filter(\.safety.isDeletable).map(\.id))
+    }
+
     private func refresh(allowDuringDeletion: Bool) async {
         guard allowDuringDeletion || !isDeleting else { return }
 
@@ -159,7 +182,10 @@ public final class SnapshotViewModel: ObservableObject {
         defer { isLoading = false }
 
         do {
-            snapshots = try await scanner.scan()
+            let scannedSnapshots = try await scanner.scan()
+            let hiddenSnapshots = scannedSnapshots.filter(Self.hasZeroPrivateSize)
+            SnapshotScanDiagnostics.logHiddenZeroPrivateSizeSnapshots(hiddenSnapshots)
+            snapshots = scannedSnapshots.filter { !Self.hasZeroPrivateSize($0) }
             selectedIDs = selectedIDs.intersection(
                 Set(snapshots.filter(isSelectable).map(\.id))
             )
@@ -167,6 +193,13 @@ public final class SnapshotViewModel: ObservableObject {
         } catch {
             errorMessage = error.localizedDescription
         }
+    }
+
+    private static func hasZeroPrivateSize(_ snapshot: AssessedSnapshot) -> Bool {
+        guard let privateSizeBytes = snapshot.snapshot.privateSizeBytes else {
+            return false
+        }
+        return privateSizeBytes == 0
     }
 
     private func delete(

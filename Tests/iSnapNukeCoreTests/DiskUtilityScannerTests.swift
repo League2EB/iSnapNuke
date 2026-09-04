@@ -61,4 +61,39 @@ final class DiskUtilityScannerTests: XCTestCase {
         XCTAssertFalse(incomplete.safety.isDeletable)
         XCTAssertFalse(incomplete.safety.reasons.isEmpty)
     }
+
+    func testScannerPreservesAPFSReportedZeroPrivateSize() async throws {
+        let uuid = UUID(uuidString: "0FA116AA-913B-4A65-95B0-D5769B5C8097")!
+        let scanner = fixtureScanner(
+            runner: FixtureRunner.standard,
+            sizeProvider: FixtureSizeProvider(
+                sizesByVolume: ["disk3s1": [uuid: 0]]
+            )
+        )
+
+        let snapshots = try await scanner.scan()
+        let snapshot = try XCTUnwrap(
+            snapshots.first { $0.snapshot.uuid == uuid }
+        )
+
+        XCTAssertEqual(snapshot.snapshot.privateSizeBytes, 0)
+    }
+
+    func testScannerKeepsSnapshotsWhenPrivateSizeReadFails() async throws {
+        let scanner = fixtureScanner(
+            runner: FixtureRunner.standard,
+            sizeProvider: ThrowingSizeProvider()
+        )
+
+        let snapshots = try await scanner.scan()
+
+        XCTAssertEqual(snapshots.count, 3)
+        XCTAssertTrue(snapshots.allSatisfy { $0.snapshot.privateSizeBytes == nil })
+    }
+
+    private struct ThrowingSizeProvider: SnapshotPrivateSizeProviding {
+        func privateSizes(for _: APFSVolume) throws -> [UUID: Int64] {
+            throw SnapshotPrivateSizeError.listFailed(5)
+        }
+    }
 }

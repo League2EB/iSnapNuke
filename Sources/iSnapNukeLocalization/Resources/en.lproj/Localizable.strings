@@ -26,6 +26,10 @@
 "action.ok" = "OK";
 "action.cancel" = "Cancel";
 "action.refresh" = "Refresh";
+"action.select_all_eligible" = "Select All Eligible";
+"action.select_all_eligible_hint" = "Selects every snapshot that meets normal deletion criteria. Protected snapshots are not selected.";
+"action.deselect_all" = "Deselect All";
+"action.deselect_all_hint" = "Deselects every snapshot that meets normal deletion criteria. Protected snapshots are not deselected.";
 "action.delete_permanently" = "Delete permanently";
 "action.retry_admin" = "Retry with Administrator Privileges";
 "action.done" = "Done";

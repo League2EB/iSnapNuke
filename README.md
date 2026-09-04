@@ -52,7 +52,7 @@ So I built iSnapNuke: a nuclear option for blasting those snapshots away and tak
 - Shows each snapshot's name, UUID, XID, source inference, APFS metadata, and APFS Private Size when available.
 - Infers known snapshot sources from their names, including macOS Update, Time Machine, and Synology Active Backup.
 - Separates snapshots into **Eligible for deletion** and **Protected** groups using conservative safety rules.
-- Supports multi-selection, an irreversible-action confirmation dialog, a fresh safety scan before every deletion, progress feedback, and a per-item result summary.
+- Supports multi-selection, one-click selection or deselection of all eligible snapshots (never protected snapshots), an irreversible-action confirmation dialog, a fresh safety scan before every deletion, progress feedback, and a per-item result summary.
 - Attempts standard deletion first and offers an administrator-authorized retry when macOS denies that operation for a likely permission reason.
 - Includes a session-only **Fuck It Mode** for deliberately attempting protected snapshots with administrator authorization.
 - Supports English and Traditional Chinese interfaces.
