@@ -6,25 +6,27 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     <channel>
         <title>iSnapNuke</title>
         <item>
-            <title>1.0.3</title>
-            <pubDate>Thu, 03 Sep 2026 10:03:27 +0800</pubDate>
-            <link>https://github.com/League2EB/iSnapNuke/releases/tag/v1.0.3</link>
-            <sparkle:version>4</sparkle:version>
-            <sparkle:shortVersionString>1.0.3</sparkle:shortVersionString>
+            <title>1.0.4</title>
+            <pubDate>Fri, 04 Sep 2026 16:00:12 +0800</pubDate>
+            <link>https://github.com/League2EB/iSnapNuke/releases/tag/v1.0.4</link>
+            <sparkle:version>5</sparkle:version>
+            <sparkle:shortVersionString>1.0.4</sparkle:shortVersionString>
             <sparkle:minimumSystemVersion>14.0</sparkle:minimumSystemVersion>
-            <description sparkle:format="markdown"><![CDATA[# iSnapNuke 1.0.3
+            <description sparkle:format="markdown"><![CDATA[# iSnapNuke 1.0.4
 
 ## English
 
-- Added Universal 2 builds for native support on both Intel and Apple Silicon Macs.
-- Updated the README documentation.
+- Select all eligible snapshots at once for faster bulk deletion.
+- Snapshots with zero private size are now filtered out.
+- Refined English-language wording throughout the app.
 
 ## 繁體中文
 
-- 新增 Universal 2 版本，原生支援 Intel 與 Apple Silicon Mac。
-- 更新了 README 文件。
+- 可一次選取所有符合資格的快照，加速批次刪除。
+- 現在會篩除私有大小為零的快照。
+- 改善了 App 內的英文介面文字。
 ]]></description>
-            <enclosure url="https://github.com/League2EB/iSnapNuke/releases/download/v1.0.3/iSnapNuke-1.0.3-4-universal.dmg" length="3407316" type="application/octet-stream" sparkle:edSignature="pWbUXQWPb4HfLpWpyJiwEiquEh0G4jd5MkDQmIIvfvHaQlvjOsnaLN82D0JtuLbc/Tz2Qsvl1hR712Awk4GjDg=="/>
+            <enclosure url="https://github.com/League2EB/iSnapNuke/releases/download/v1.0.4/iSnapNuke-1.0.4-5-universal.dmg" length="3426013" type="application/octet-stream" sparkle:edSignature="HkdhA1RVCEJBLD9Y7j4Zy6UqT9dEsGe3+uGFLy37wMownV10XcDdPl8aQEbxHNOjJJMox5OPgHOVClCbe6NmBg=="/>
         </item>
         <item>
             <title>1.0.2</title>
@@ -51,6 +53,6 @@ IMPORTANT: This file was signed by Sparkle. Any modifications to this file requi
     </channel>
 </rss>
 <!-- sparkle-signatures:
-edSignature: oJ+bapmu8JaCOU4MjGCAWaTRj9o70BgdevC0sDALJtpmnEzeeR66tQI+jBK56CJIWocaU47PknUSO3r2RsgnBg==
-length: 2629
+edSignature: PRuqs1GSj3s8+wpG9LFBjQR9iA0EhZnHqfW1JZ4OR/ketbZM/k9Hs+97frlOaMmNTT6QwjAB2J6r+5NggtooDA==
+length: 2745
 -->

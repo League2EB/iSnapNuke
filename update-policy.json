@@ -1,15 +1,15 @@
 {
   "policy" : {
-    "latestBuild" : 4,
-    "latestVersion" : "1.0.3",
+    "latestBuild" : 5,
+    "latestVersion" : "1.0.4",
     "minimumSupportedBuild" : 3,
     "minimumSupportedVersion" : "1.0.2",
-    "publishedAt" : "2026-09-03T02:03:28Z",
+    "publishedAt" : "2026-09-04T08:00:13Z",
     "releaseNotes" : {
-      "en" : "- Added Universal 2 builds for native support on both Intel and Apple Silicon Macs.\n- Updated the README documentation.",
-      "zh-Hant" : "- 新增 Universal 2 版本，原生支援 Intel 與 Apple Silicon Mac。\n- 更新了 README 文件。"
+      "en" : "- Select all eligible snapshots at once for faster bulk deletion.\n- Snapshots with zero private size are now filtered out.\n- Refined English-language wording throughout the app.",
+      "zh-Hant" : "- 可一次選取所有符合資格的快照，加速批次刪除。\n- 現在會篩除私有大小為零的快照。\n- 改善了 App 內的英文介面文字。"
     },
     "schemaVersion" : 1
   },
-  "signature" : "dalaMgcxhykfTDXt0nQ9Rxu4pXYDenClxSSI6GdFTlwgz63lS3oxuhk3FMg7IjxI7EhsW5DQqzyN3F+Eo1XHDQ=="
+  "signature" : "brX8zlWY/m2cnO4k8GzD/tLJImaYCR2le1CYu5/19oNHJ8dvzJng5s5FH06Ee88emTjQWpn1niddv+spEWeiCQ=="
 }
